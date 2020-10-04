@@ -2,7 +2,6 @@ import { Header, Nav, Main, Footer } from "./components";
 import * as state from "./store";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
-import axios from "axios";
 
 const router = new Navigo(window.location.origin);
 
@@ -12,21 +11,6 @@ router
     "/": () => render(state.Home)
   })
   .resolve();
-
-axios
-  .get("https://jsonplaceholder.typicode.com/posts")
-  .then(response => {
-    console.log("response.data", response.data);
-    response.data.forEach(post => {
-      state.Blog.posts.push(post);
-    });
-    const params = router.lastRouteResolved().params;
-    console.log(params);
-    if (params) {
-      render(state[params.page]);
-    }
-  })
-  .catch(err => console.log(err));
 
 function render(st = state.Home) {
   // console.log("rendering state", st);
